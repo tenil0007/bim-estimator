@@ -134,8 +134,8 @@ class CostPredictor:
         """Build model with sensible default hyperparameters."""
         if self.model_type == "xgboost" and HAS_XGBOOST:
             return XGBRegressor(
-                n_estimators=300,
-                max_depth=8,
+                n_estimators=100,
+                max_depth=6,
                 learning_rate=0.05,
                 subsample=0.8,
                 colsample_bytree=0.8,
@@ -143,28 +143,28 @@ class CostPredictor:
                 reg_lambda=1.0,
                 min_child_weight=5,
                 random_state=42,
-                n_jobs=-1,
+                n_jobs=1,
                 verbosity=0,
             )
         elif self.model_type == "lightgbm":
             return lgb.LGBMRegressor(
-                n_estimators=300,
-                max_depth=8,
+                n_estimators=100,
+                max_depth=6,
                 learning_rate=0.05,
                 subsample=0.8,
                 random_state=42,
-                n_jobs=-1,
+                n_jobs=1,
                 verbose=-1
             )
         else:
             return RandomForestRegressor(
-                n_estimators=300,
-                max_depth=15,
+                n_estimators=100,
+                max_depth=10,
                 min_samples_split=5,
                 min_samples_leaf=2,
                 max_features="sqrt",
                 random_state=42,
-                n_jobs=-1,
+                n_jobs=1,
             )
 
     def _tune_hyperparameters(self, X_train, y_train):
