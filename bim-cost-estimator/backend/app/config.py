@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     backend_cors_origins: str = "http://localhost:5173,http://localhost:3000"
 
     # Database
-    database_url: str = "sqlite:///./data/bim_estimator.db"
+    database_url: str = "postgresql://localhost:5432/bim_estimator"
 
     # File Storage
     upload_dir: str = "./data/uploads"

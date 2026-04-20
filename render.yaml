@@ -20,12 +20,7 @@ services:
         value: false
       - key: BACKEND_CORS_ORIGINS
         value: "*" # Allow frontend to connect (you can restrict this to the frontend URL later for prod)
-      - key: DATABASE_URL
-        value: "sqlite:////data/bim_estimator.db" # Notice the quadruple slash indicating absolute path
-      - key: UPLOAD_DIR
-        value: "/data/uploads"
-      - key: MODEL_DIR
-        value: "/data/models"
+      # DATABASE_URL is set as a secret in Render dashboard (Supabase PostgreSQL)
 
 
   # ─── Frontend Service ──────────────────────────────────────────
