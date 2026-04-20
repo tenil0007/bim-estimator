@@ -6,6 +6,7 @@ services:
   - type: web
     name: bim-backend
     env: python
+    rootDir: bim-cost-estimator
     region: singapore # Change based on your target users
     buildCommand: "cd backend && pip install -r requirements.txt"
     startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
@@ -35,6 +36,7 @@ services:
   - type: web
     name: bim-frontend
     env: static
+    rootDir: bim-cost-estimator
     region: singapore
     buildCommand: "cd frontend && npm install && npm run build"
     staticPublishPath: "./frontend/dist"
