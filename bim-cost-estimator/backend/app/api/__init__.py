@@ -156,6 +156,25 @@ async def list_all_projects(skip: int = 0, limit: int = 50, db: Session = Depend
         "total": len(projects),
     }
 
+
+@api_router.post("/create-demo", response_model=IFCUploadResponse, tags=["IFC / BIM Data"])
+async def create_demo_project(db: Session = Depends(get_db)):
+    """Create a synthetic demo project without uploading a real IFC file."""
+    import uuid
+    project_name = "Synthetic Demo Project"
+    project = create_project(
+        db=db, name=project_name, ifc_filename="demo.ifc",
+        file_path="synthetic", file_size_mb=0.0,
+    )
+    # Pre-generate and store synthetic elements immediately
+    _parse_and_store(project, use_synthetic=True, db=db, project_id=project.id)
+    return IFCUploadResponse(
+        project_id=project.id, filename="demo.ifc",
+        file_size_mb=0.0, status="uploaded",
+        message=f"Synthetic demo project created. Project ID: {project.id}",
+    )
+
+
 @api_router.get("/export-data/{project_id}", tags=["IFC / BIM Data"])
 async def export_data(
     project_id: str,

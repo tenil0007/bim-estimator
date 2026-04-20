@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import toast, { Toaster } from 'react-hot-toast';
-import { uploadIFC, extractData, listProjects } from '../services/api';
+import { uploadIFC, extractData, listProjects, createDemo } from '../services/api';
 
 export default function Dashboard({ projectData, setProjectData, onProjectLoaded }) {
   const [loading, setLoading] = useState(false);
@@ -52,8 +52,9 @@ export default function Dashboard({ projectData, setProjectData, onProjectLoaded
     setLoading(true);
     try {
       toast.loading('Generating synthetic demo data...', { id: 'demo' });
-      const uploadResult = await uploadIFC(new File([''], 'demo.ifc'), 'Demo Project');
-      const extractResult = await extractData(uploadResult.project_id, true);
+      // Use dedicated demo endpoint - does not require a file upload
+      const uploadResult = await createDemo();
+      const extractResult = await extractData(uploadResult.project_id, false);
 
       const data = {
         projectId: uploadResult.project_id,

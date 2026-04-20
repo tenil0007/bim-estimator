@@ -59,6 +59,12 @@ export const listProjects = async () => {
   return response.data;
 };
 
+export const createDemo = async () => {
+  const response = await api.post('/create-demo');
+  return response.data;
+};
+
+
 // ─── Predictions ──────────────────────────────────────────────────
 
 export const getMaterialRates = async (materialNames) => {
