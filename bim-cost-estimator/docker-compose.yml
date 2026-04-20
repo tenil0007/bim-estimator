@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════
+# BIM Cost & Time Estimator - Docker Compose
+# Multi-service orchestration for development and production
+# ═══════════════════════════════════════════════════════════════════
+
+version: "3.9"
+
+services:
+  # ─── Backend (FastAPI) ──────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bim-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=BIM Cost & Time Estimator
+      - DEBUG=true
+      - DATABASE_URL=sqlite:///./data/bim_estimator.db
+      - BACKEND_CORS_ORIGINS=http://localhost:5173,http://localhost:3000,http://localhost:80
+    volumes:
+      - backend_data:/app/data
+      - backend_models:/app/ml/saved_models
+      - backend_logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # ─── Frontend (React + Nginx) ──────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bim-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  backend_data:
+    driver: local
+  backend_models:
+    driver: local
+  backend_logs:
+    driver: local

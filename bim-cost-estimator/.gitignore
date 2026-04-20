@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+*.env.local
+
+# Data & Models
+backend/data/extracted/*.csv
+backend/data/extracted/*.json
+backend/ml/saved_models/*.joblib
+backend/data/sample_ifc/*.ifc
+*.ifc
+
+# Database
+*.db
+*.sqlite3
+
+# Reports
+backend/data/reports/*.pdf
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Docker
+.docker/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

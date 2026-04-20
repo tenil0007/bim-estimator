@@ -1,0 +1,64 @@
+# Render Blueprint (Infrastructure as Code)
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  # ─── Backend Service ───────────────────────────────────────────
+  - type: web
+    name: bim-backend
+    env: python
+    region: singapore # Change based on your target users
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: APP_NAME
+        value: "BIM Cost & Time Estimator"
+      - key: DEBUG
+        value: false
+      - key: BACKEND_CORS_ORIGINS
+        value: "*" # Allow frontend to connect (you can restrict this to the frontend URL later for prod)
+      - key: DATABASE_URL
+        value: "sqlite:////data/bim_estimator.db" # Notice the quadruple slash indicating absolute path
+      - key: UPLOAD_DIR
+        value: "/data/uploads"
+      - key: MODEL_DIR
+        value: "/data/models"
+    # Persistent Disk for SQLite, Models, and Uploads so they aren't lost on sleep/restart
+    # Requires Render Starter plan ($7/mo) or higher.
+    disk:
+      name: bim-data
+      mountPath: /data
+      sizeGB: 5
+
+  # ─── Frontend Service ──────────────────────────────────────────
+  - type: web
+    name: bim-frontend
+    env: static
+    region: singapore
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      # VITE_API_BASE_URL points the frontend to the deployed backend.
+      # You may need to update this URL manually first, or use Render's dynamic host variable.
+      # Because Render hosts backend as a separate service, it will be assigned a URL like:
+      # https://bim-backend.onrender.com
+      # Be sure to add /api/v1 (or simply / depending on FastAPI setup - our main.py handles routes, is it under /api/v1 or just /?)
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: bim-backend
+          property: host
+        # VITE_API_BASE_URL will evaluate to the actual domain (e.g. bim-backend-123.onrender.com)
+        # However, it lacks 'https://'. A workaround is to provide a static env Var in the dashboard OR:
+        # Note: Render doesn't natively prepend https:// in fromService property for host. 
+        # So we might need to rely on relative paths if frontend and backend are hosted on same domain (via rewrites), OR hardcode it later in dashboard.
+        # But let's build the Render feature correctly: Render supports 'url' property which includes https://!
+        # Correction: `url` property is supported in newer Render specs!
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: bim-backend
+          property: url

@@ -1,0 +1,29 @@
+{
+  "name": "bim-cost-estimator-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "axios": "^1.7.9",
+    "chart.js": "^4.4.7",
+    "react-chartjs-2": "^5.2.0",
+    "frappe-gantt": "^0.6.1",
+    "react-dropzone": "^14.3.5",
+    "react-hot-toast": "^2.4.1",
+    "lucide-react": "^0.460.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.3"
+  }
+}
