@@ -17,7 +17,7 @@ services:
       - key: APP_NAME
         value: "BIM Cost & Time Estimator"
       - key: DEBUG
-        value: false
+        value: true
       - key: BACKEND_CORS_ORIGINS
         value: "*" # Allow frontend to connect (you can restrict this to the frontend URL later for prod)
       # DATABASE_URL is set as a secret in Render dashboard (Supabase PostgreSQL)
