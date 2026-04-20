@@ -6,6 +6,7 @@ services:
   - type: web
     name: bim-backend
     env: python
+    plan: free # Force Render to use the completely free instance tier
     rootDir: bim-cost-estimator
     region: singapore # Change based on your target users
     buildCommand: "cd backend && pip install -r requirements.txt"
@@ -25,12 +26,7 @@ services:
         value: "/data/uploads"
       - key: MODEL_DIR
         value: "/data/models"
-    # Persistent Disk for SQLite, Models, and Uploads so they aren't lost on sleep/restart
-    # Requires Render Starter plan ($7/mo) or higher.
-    disk:
-      name: bim-data
-      mountPath: /data
-      sizeGB: 5
+
 
   # ─── Frontend Service ──────────────────────────────────────────
   - type: web
