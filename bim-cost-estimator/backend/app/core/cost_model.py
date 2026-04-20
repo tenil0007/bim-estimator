@@ -108,10 +108,12 @@ class CostPredictor:
             ),
         }
 
-        # Cross-validation
-        cv_scores = cross_val_score(self.model, X, y, cv=5, scoring="r2")
-        self.metrics["cv_r2_mean"] = round(cv_scores.mean(), 4)
-        self.metrics["cv_r2_std"] = round(cv_scores.std(), 4)
+        # Cross-validation disabled for online inference to prevent memory/timeout issues
+        # cv_scores = cross_val_score(self.model, X, y, cv=5, scoring="r2")
+        # self.metrics["cv_r2_mean"] = round(cv_scores.mean(), 4)
+        # self.metrics["cv_r2_std"] = round(cv_scores.std(), 4)
+        self.metrics["cv_r2_mean"] = "N/A"
+        self.metrics["cv_r2_std"] = "N/A"
 
         self.is_trained = True
         logger.info(f"Cost model trained | R²={self.metrics['test_r2']} | RMSE={self.metrics['test_rmse']}")

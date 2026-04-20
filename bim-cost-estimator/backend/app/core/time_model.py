@@ -135,10 +135,12 @@ class TimePredictor:
             "test_mae": round(mean_absolute_error(y_test, y_pred_test), 2),
         }
 
-        # Cross-validation
-        cv_scores = cross_val_score(self.model, X, y, cv=5, scoring="r2")
-        self.metrics["cv_r2_mean"] = round(cv_scores.mean(), 4)
-        self.metrics["cv_r2_std"] = round(cv_scores.std(), 4)
+        # Cross-validation disabled for online inference
+        # cv_scores = cross_val_score(self.model, X, y, cv=5, scoring="r2")
+        # self.metrics["cv_r2_mean"] = round(cv_scores.mean(), 4)
+        # self.metrics["cv_r2_std"] = round(cv_scores.std(), 4)
+        self.metrics["cv_r2_mean"] = "N/A"
+        self.metrics["cv_r2_std"] = "N/A"
 
         self.is_trained = True
         logger.info(f"Time model trained | R²={self.metrics['test_r2']} | RMSE={self.metrics['test_rmse']}")
