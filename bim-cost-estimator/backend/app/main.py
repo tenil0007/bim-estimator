@@ -5,6 +5,14 @@ Main application setup with middleware, CORS, lifecycle events,
 and route registration.
 """
 
+import os
+# Prevent OpenBLAS/OMP from allocating hundreds of MBs per thread on low RAM instances (Render free tier)
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_CORETYPE"] = "HASWELL" # Prevents illegal instruction crashes on generic VMs
+
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
