@@ -37,7 +37,6 @@ services:
     name: bim-frontend
     env: static
     rootDir: bim-cost-estimator
-    region: singapore
     buildCommand: "cd frontend && npm install && npm run build"
     staticPublishPath: "./frontend/dist"
     envVars:
@@ -53,14 +52,3 @@ services:
           type: web
           name: bim-backend
           property: host
-        # VITE_API_BASE_URL will evaluate to the actual domain (e.g. bim-backend-123.onrender.com)
-        # However, it lacks 'https://'. A workaround is to provide a static env Var in the dashboard OR:
-        # Note: Render doesn't natively prepend https:// in fromService property for host. 
-        # So we might need to rely on relative paths if frontend and backend are hosted on same domain (via rewrites), OR hardcode it later in dashboard.
-        # But let's build the Render feature correctly: Render supports 'url' property which includes https://!
-        # Correction: `url` property is supported in newer Render specs!
-      - key: VITE_API_BASE_URL
-        fromService:
-          type: web
-          name: bim-backend
-          property: url
