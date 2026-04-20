@@ -20,7 +20,11 @@ from app.utils import get_logger
 from app.config import get_settings
 from app.core.feature_engine import BIMFeatureEngine, COST_TARGET
 
-import lightgbm as lgb
+try:
+    import lightgbm as lgb
+    HAS_LIGHTGBM = True
+except ImportError:
+    HAS_LIGHTGBM = False
 
 logger = get_logger("cost_model")
 

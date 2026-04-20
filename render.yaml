@@ -33,13 +33,7 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20
-      # VITE_API_BASE_URL points the frontend to the deployed backend.
-      # You may need to update this URL manually first, or use Render's dynamic host variable.
-      # Because Render hosts backend as a separate service, it will be assigned a URL like:
-      # https://bim-backend.onrender.com
-      # Be sure to add /api/v1 (or simply / depending on FastAPI setup - our main.py handles routes, is it under /api/v1 or just /?)
+      # VITE_API_BASE_URL must be the full URL including protocol and API path.
+      # 'hostURL' gives https://bim-backend.onrender.com — we append /api/v1
       - key: VITE_API_BASE_URL
-        fromService:
-          type: web
-          name: bim-backend
-          property: host
+        value: "https://bim-backend.onrender.com/api/v1"
