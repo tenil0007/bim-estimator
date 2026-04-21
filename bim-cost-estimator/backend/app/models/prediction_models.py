@@ -5,7 +5,7 @@ Request/Response schemas for cost and time prediction endpoints.
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, Any
 
 
 class MaterialUnitRate(BaseModel):
@@ -75,7 +75,7 @@ class CostPredictionResponse(BaseModel):
     material_breakdown: dict[str, float]  # by material
     storey_breakdown: dict[str, float]  # by floor
     predictions: list[ElementPrediction]
-    metrics: dict[str, float]  # R², RMSE, etc.
+    metrics: dict[str, Any]  # R², RMSE, etc.
     material_unit_rates: list[MaterialUnitRate] = Field(
         default_factory=list,
         description="Indicative ₹/unit reference rates (live USD/INR snapshot)",
@@ -95,4 +95,4 @@ class TimePredictionResponse(BaseModel):
     duration_breakdown: dict[str, float]  # by element type (hours)
     storey_breakdown: dict[str, float]  # by floor (hours)
     predictions: list[ElementPrediction]
-    metrics: dict[str, float]
+    metrics: dict[str, Any]

@@ -204,7 +204,7 @@ class CostPredictor:
             param_grid=param_grid,
             cv=3,
             scoring="r2",
-            n_jobs=-1,
+            n_jobs=1,
             verbose=1,
         )
         grid_search.fit(X_train, y_train)

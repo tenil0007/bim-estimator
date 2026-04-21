@@ -127,6 +127,9 @@ async def predict_cost(
         predictor.save()
         predictions = predictor.predict(df)
 
+    # Prevent NaN/Inf validation errors during JSON serialization (Network Error)
+    predictions = np.nan_to_num(predictions, nan=0.0, posinf=0.0, neginf=0.0)
+
     # Build response
     element_predictions = []
     cost_by_type = {}
@@ -231,6 +234,9 @@ async def predict_time(
         predictor.train(df)
         predictor.save()
         predictions = predictor.predict(df)
+
+    # Prevent NaN/Inf validation errors
+    predictions = np.nan_to_num(predictions, nan=0.0, posinf=0.0, neginf=0.0)
 
     # Build response
     element_predictions = []

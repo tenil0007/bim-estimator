@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # Server
     backend_host: str = "0.0.0.0"
     backend_port: int = 8000
-    backend_cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    backend_cors_origins: str = "http://localhost:5173,http://localhost:3000,https://bim-frontend-2cct.onrender.com,*"
 
     # Database
     database_url: str = "postgresql://localhost:5432/bim_estimator"
