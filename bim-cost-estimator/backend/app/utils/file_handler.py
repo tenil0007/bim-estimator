@@ -50,19 +50,20 @@ async def save_upload_file(upload_file: UploadFile, project_id: str = None) -> d
     # Save file
     file_path = project_dir / upload_file.filename
     try:
-        contents = await upload_file.read()
-
-        # Validate size
-        if len(contents) > MAX_SIZE_BYTES:
-            raise HTTPException(
-                status_code=413,
-                detail=f"File too large. Max size: {settings.max_upload_size_mb}MB"
-            )
-
-        with open(file_path, "wb") as f:
-            f.write(contents)
-
-        file_size = len(contents)
+        # Stream the file to disk in chunks to handle large files efficiently
+        file_size = 0
+        with open(file_path, "wb") as buffer:
+            while chunk := await upload_file.read(1024 * 1024):  # 1MB chunks
+                file_size += len(chunk)
+                if file_size > MAX_SIZE_BYTES:
+                    # Cleanup the partial file
+                    if file_path.exists():
+                        os.remove(file_path)
+                    raise HTTPException(
+                        status_code=413,
+                        detail=f"File too large. Max size: {settings.max_upload_size_mb}MB"
+                    )
+                buffer.write(chunk)
         logger.info(
             f"File saved | project={project_id} | file={upload_file.filename} | size={file_size}"
         )

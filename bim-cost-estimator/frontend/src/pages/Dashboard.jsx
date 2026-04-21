@@ -21,7 +21,7 @@ export default function Dashboard({ projectData, setProjectData, onProjectLoaded
       setUploadProgress(60);
       toast.loading('Extracting BIM data...', { id: 'upload' });
 
-      const extractResult = await extractData(uploadResult.project_id, true);
+      const extractResult = await extractData(uploadResult.project_id, false);
       setUploadProgress(100);
 
       const data = {
@@ -80,7 +80,11 @@ export default function Dashboard({ projectData, setProjectData, onProjectLoaded
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'application/octet-stream': ['.ifc', '.ifczip'] },
+    accept: { 
+      'application/octet-stream': ['.ifc', '.ifczip'],
+      'text/plain': ['.ifc'],
+      'application/x-ifc': ['.ifc']
+    },
     maxFiles: 1,
   });
 
